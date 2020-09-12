@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+<h:head>
+	<title>Proyecto Software2 Libros</title>
+
+</h:head>
+<h:body>
+	<h2>Listado de Libros</h2>
+	<h:dataTable value="#{libroBean.libros}" var="libro" border="2">
+		<h:column>
+			<f:facet name="header">Id Libro</f:facet>
+         #{libro.idLibro}
+      </h:column>
+		<h:column>
+			<f:facet name="header">Nombre</f:facet>
+         #{libro.nomber}
+      </h:column>
+		<h:column>
+			<f:facet name="header">Autor</f:facet>
+           #{libro.autor}
+       </h:column>
+		<h:column>
+			<f:facet name="header">Estado</f:facet>
+           #{libro.estado}
+       </h:column>
+		<h:column>
+			<f:facet name="header">Observacion</f:facet>
+           #{libro.observaciones}
+       </h:column>
+	</h:dataTable>
+</h:body>
+</html>
