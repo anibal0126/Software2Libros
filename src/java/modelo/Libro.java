@@ -11,18 +11,18 @@ public class Libro {
 	private String nombre;
 	private String autor;
 	private String estado;
-	private String observacion;
+	private String observaciones;
 
 	public Libro() {
 	}
 
 	public Libro(Integer idLibro, String nombre, String autor, String estado,
-			String observacion) {
+			String observaciones) {
 		this.idLibro = idLibro;
 		this.nombre = nombre;
 		this.autor = autor;
 		this.estado = estado;
-		this.observacion = observacion;
+		this.observaciones = observaciones;
 	}
 
 	public Integer getIdLibro() {
@@ -57,12 +57,12 @@ public class Libro {
 		this.estado = estado;
 	}
 
-	public String getObservacion() {
-		return observacion;
+	public String getObservaciones() {
+		return observaciones;
 	}
 
-	public void setObservacion(String observacion) {
-		this.observacion = observacion;
+	public void setObservaciones(String observaciones) {
+		this.observaciones = observaciones;
 	}
 
 }

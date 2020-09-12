@@ -22,10 +22,10 @@ public class LibroBean implements Serializable {
             
 		Connection connect = null;
 
-		String url = "jdbc:mysql://localhost:3306/libros";
+		String url = "jdbc:mysql://localhost:3306/cardb";
 
 		String username = "root";
-		String password = "0711";
+		String password = "cne7";
 
 		try {
 
@@ -40,7 +40,7 @@ public class LibroBean implements Serializable {
 		}
 
 		List<Libro> libros = new ArrayList<>();
-		PreparedStatement pstmt = connect.prepareStatement("select idLibro, nombre, autor, estado, observacion from Libros");
+		PreparedStatement pstmt = connect.prepareStatement("select idLibro, nombre, autor, estado, observaciones from Libros");
 		ResultSet rs = pstmt.executeQuery();
 
 		while (rs.next()) {
@@ -51,7 +51,7 @@ public class LibroBean implements Serializable {
 			libro.setNombre(rs.getString("nombre"));
 			libro.setAutor(rs.getString("autor"));
 			libro.setEstado(rs.getString("estado"));
-			libro.setObservacion(rs.getString("observacion"));
+			libro.setObservaciones(rs.getString("observaciones"));
 
 			libros.add(libro);
 
