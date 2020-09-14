@@ -1,5 +1,6 @@
 package modelo;
 
+import java.awt.BorderLayout;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -65,5 +66,10 @@ public class LibroBean implements Serializable {
 		return libros;
 
 	}
+        public void calificar(int id){
+            
+            System.out.println("Este es el "+id);
+               
+        }
 
 }
