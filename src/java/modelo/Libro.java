@@ -12,6 +12,7 @@ public class Libro {
 	private String autor;
 	private String estado;
 	private String observaciones;
+        
 
 	public Libro() {
 	}

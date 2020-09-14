@@ -19,36 +19,51 @@
     </h:head>
     <h:body>
         <h:form>
-        <h2>Listado de Libros</h2>
-        <h:dataTable value="#{libroBean.libros}" var="libro" border="2">
-            <h:column>
-                <f:facet name="header">Id Libro</f:facet>
-                    #{libro.idLibro}
-            </h:column>
-            <h:column>
-                <f:facet name="header">Nombre</f:facet>
-                    #{libro.nombre}
-            </h:column>
-            <h:column>
-                <f:facet name="header">Autor</f:facet>
-                    #{libro.autor}
-            </h:column>
-            <h:column>
-                <f:facet name="header">Estado</f:facet>
-                    #{libro.estado}
-            </h:column>
-            <h:column>
-                <f:facet name="header">Observacion</f:facet>
-                    #{libro.observaciones}
-            </h:column>
-            <h:column>
-                <f:facet name="header">Acciones</f:facet>
+            <h2>Listado de Libros</h2>
+            <h:dataTable value="#{libroBean.libros}" var="libro" border="2">
+                <h:column>
+                    <f:facet name="header">Id Libro</f:facet>
+                        #{libro.idLibro}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Nombre</f:facet>
+                        #{libro.nombre}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Autor</f:facet>
+                        #{libro.autor}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Estado</f:facet>
+                        #{libro.estado}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Observacion</f:facet>
+                        #{libro.observaciones}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Acciones</f:facet>
                     <p:commandButton value="Calificar Libro"
-                                     action="#{libroBean.calificar(libro.idLibro)}"  />
-            </h:column>
-        </h:dataTable>
-        <br/>
+                                     action="#{libroBean.calificar(libro.idLibro)}" />
+                </h:column>
+            </h:dataTable>
+            <br/>
+        </h:form>
+        <p:dialog id="myDialogID" widgetVar="myDialogVar">
+            <h:form>
+                <h:selectOneMenu value="#{libroBean.calificacion}">
+                <f:selectItem itemValue="1" itemLabel="1" />
+                <f:selectItem itemValue="2" itemLabel="2" />
+                <f:selectItem itemValue="3" itemLabel="3" />
+                <f:selectItem itemValue="3" itemLabel="4" />
+                <f:selectItem itemValue="3" itemLabel="5" />
+            </h:selectOneMenu>
+            <p:commandButton value="guadar"
+                             action="#{libroBean.guadar(libroBean.idLibroCalificacion)}" />
+            </h:form> 
+            #{libroBean.idLibroCalificacion}
+            <h:outputText value="Compratelo" rendered="#{libroBean.idLibroCalificacion lt 1000}"/>
+        </p:dialog>
         
-</h:form>
     </h:body>
 </html>
