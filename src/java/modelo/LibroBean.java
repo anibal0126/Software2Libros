@@ -156,7 +156,7 @@ public class LibroBean implements Serializable {
         LocalDateTime now = LocalDateTime.now();
         System.out.println(dtf.format(now));
         
-        PreparedStatement pstmt = connect.prepareStatement("insert into resenia(libros_idLibro, mensaje, fecha, lector) value (1,'"+reseniaMensaje+"', '"+dtf.format(now)+"','Anibal' )");
+        PreparedStatement pstmt = connect.prepareStatement("insert into resenia(libros_idLibro, mensaje, fecha, lector) value ("+idLibroCalificacion+",'"+reseniaMensaje+"', '"+dtf.format(now)+"','Anibal' )");
         int rs = pstmt.executeUpdate();
         
         RequestContext context = RequestContext.getCurrentInstance();                                                   
