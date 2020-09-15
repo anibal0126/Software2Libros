@@ -41,10 +41,13 @@
                     <f:facet name="header">Observacion</f:facet>
                         #{libro.observaciones}
                 </h:column>
+                
                 <h:column>
                     <f:facet name="header">Acciones</f:facet>
                     <p:commandButton value="Calificar Libro"
                                      action="#{libroBean.calificar(libro.idLibro)}" />
+                    <p:commandButton value="Ver Calificaciones"
+                                     action="#{libroBean.listarCalificaciones(libro.idLibro)}" />
                 </h:column>
             </h:dataTable>
             <br/>
@@ -59,10 +62,34 @@
                 <f:selectItem itemValue="3" itemLabel="5" />
             </h:selectOneMenu>
             <p:commandButton value="guadar"
-                             action="#{libroBean.guadar(libroBean.idLibroCalificacion)}" />
+                             action="#{libroBean.guardar()}" />
             </h:form> 
-            #{libroBean.idLibroCalificacion}
-            <h:outputText value="Compratelo" rendered="#{libroBean.idLibroCalificacion lt 1000}"/>
+           
+        </p:dialog>
+        <p:dialog id="listadoCalificaciones" widgetVar="listadoCalificaciones">
+            <h:form>
+                <h:dataTable value="#{libroBean.calificaciones}" var="calificacion" border="2">
+
+                <h:column>
+                    <f:facet name="header">Fecha</f:facet>
+                        #{calificacion.fecha}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Calificación</f:facet>
+                        #{calificacion.calificacion}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Usuario</f:facet>
+                        #{calificacion.usuario}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Id Libro</f:facet>
+                        #{calificacion.idLibro}
+                </h:column>
+               
+            </h:dataTable>
+            </h:form> 
+           
         </p:dialog>
         
     </h:body>

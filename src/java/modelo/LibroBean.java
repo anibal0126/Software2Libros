@@ -3,20 +3,47 @@ package modelo;
 import java.awt.BorderLayout;
 import java.io.Serializable;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.bean.SessionScoped;
 import org.primefaces.context.RequestContext;
+import java.util.*;
 
 @ManagedBean
-@RequestScoped
+@SessionScoped
 public class LibroBean implements Serializable {
+
+    Connection connect = null;
+
+    public void conectar() throws ClassNotFoundException {
+
+        String url = "jdbc:mysql://localhost:3306/libros";
+
+        String username = "root";
+        String password = "0711";
+
+        try {
+
+            Class.forName("com.mysql.jdbc.Driver");
+
+            connect = DriverManager.getConnection(url, username, password);
+            System.out.println("Connection established" + connect);
+
+        } catch (SQLException ex) {
+            System.out.println("in exec");
+            System.out.println(ex.getMessage());
+        }
+    }
 
     private int calificacion;
     private int idLibroCalificacion;
@@ -49,24 +76,7 @@ public class LibroBean implements Serializable {
 
     public List<Libro> getLibros() throws ClassNotFoundException, SQLException {
 
-        Connection connect = null;
-
-        String url = "jdbc:mysql://localhost:3306/libros";
-
-        String username = "root";
-        String password = "0711";
-
-        try {
-
-            Class.forName("com.mysql.jdbc.Driver");
-
-            connect = DriverManager.getConnection(url, username, password);
-            System.out.println("Connection established" + connect);
-
-        } catch (SQLException ex) {
-            System.out.println("in exec");
-            System.out.println(ex.getMessage());
-        }
+        conectar();
 
         List<Libro> libros = new ArrayList<>();
         PreparedStatement pstmt = connect.prepareStatement("select idLibro, nombre, autor, estado, observaciones from libros");
@@ -97,18 +107,70 @@ public class LibroBean implements Serializable {
 
     public void calificar(int id) {
 
-        this.idLibroCalificacion = id;
-        
-        System.out.println("este es:  "+idLibroCalificacion);
+        idLibroCalificacion = id;
+
+        System.out.println("este es:  " + idLibroCalificacion);
 
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("PF('myDialogVar').show();");
     }
 
-    public void guadar(int id) {
+    public void guardar() throws SQLException, ClassNotFoundException {
+        conectar();
 
-        System.out.println("calificacion: " + calificacion);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDateTime now = LocalDateTime.now();
+        System.out.println(dtf.format(now));
+        
+        PreparedStatement pstmt = connect.prepareStatement("insert into calificacion(fecha, calificacion, usuario, libro_idLibro) value ('"+dtf.format(now)+"',"+calificacion+", 'anibal', "+idLibroCalificacion+")");
+        int rs = pstmt.executeUpdate();
+        
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.execute("PF('myDialogVar').hide();");
 
+    }
+    
+    public List<Calificacion> getCalificaciones() throws ClassNotFoundException, SQLException{
+        
+        conectar();
+        
+        System.out.println("Esta variable: "+ idLibroCalificacion);
+        
+
+        List<Calificacion> calificaciones = new ArrayList<>();
+        PreparedStatement pstmt = connect.prepareStatement("select idCalificacion, fecha, calificacion, usuario, libro_idLibro from calificacion where libro_idLibro="+idLibroCalificacion);
+        ResultSet rs = pstmt.executeQuery();
+
+        while (rs.next()) {
+
+            Calificacion calificacion = new Calificacion();
+            calificacion.setIdCalificacion(rs.getInt("idCalificacion"));
+            calificacion.setFecha(rs.getString("fecha"));
+            calificacion.setCalificacion(rs.getInt("calificacion"));
+            calificacion.setUsuario(rs.getString("usuario"));
+            calificacion.setIdLibro(rs.getInt("libro_idLibro"));
+
+            calificaciones.add(calificacion);
+
+        }
+
+        // close resources
+        rs.close();
+        pstmt.close();
+        connect.close();
+
+        return calificaciones;
+        
+    }
+    
+    public void listarCalificaciones(int id){
+        
+        idLibroCalificacion = id;
+        
+        System.out.println("OKEY: "+idLibroCalificacion);
+        
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.execute("PF('listadoCalificaciones').show();");
     }
 
 }
