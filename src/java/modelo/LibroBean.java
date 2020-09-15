@@ -169,6 +169,8 @@ public class LibroBean implements Serializable {
         
         System.out.println("OKEY: "+idLibroCalificacion);
         
+        RequestContext.getCurrentInstance().update("listadoCalificaciones");
+        
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("PF('listadoCalificaciones').show();");
     }
