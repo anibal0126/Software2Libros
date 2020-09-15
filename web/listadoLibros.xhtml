@@ -48,6 +48,10 @@
                                      action="#{libroBean.calificar(libro.idLibro)}" />
                     <p:commandButton value="Ver Calificaciones"
                                      action="#{libroBean.listarCalificaciones(libro.idLibro)}" />
+                     <p:commandButton value="Agregar Resela"
+                                     action="#{libroBean.resenia(libro.idLibro)}" />
+                     <p:commandButton value="Ver Calificaciones"
+                                     action="#{libroBean.listarCalificaciones(libro.idLibro)}" />
                 </h:column>
             </h:dataTable>
             <br/>
@@ -58,14 +62,26 @@
                 <f:selectItem itemValue="1" itemLabel="1" />
                 <f:selectItem itemValue="2" itemLabel="2" />
                 <f:selectItem itemValue="3" itemLabel="3" />
-                <f:selectItem itemValue="3" itemLabel="4" />
-                <f:selectItem itemValue="3" itemLabel="5" />
+                <f:selectItem itemValue="4" itemLabel="4" />
+                <f:selectItem itemValue="5" itemLabel="5" />
             </h:selectOneMenu>
             <p:commandButton value="guadar"
                              action="#{libroBean.guardar()}" />
             </h:form> 
            
         </p:dialog>
+        
+        <p:dialog id="myResenia" widgetVar="myResenia">
+            <h:form>
+                <textarea value="#{libroBean.reseniaMensaje}">
+                    
+                </textarea>
+            <p:commandButton value="guadarResenia"
+                             action="#{libroBean.guardarResenia()}" />
+            </h:form> 
+           
+        </p:dialog>
+        
         <p:dialog id="listadoCalificaciones" widgetVar="listadoCalificaciones">
             <h:form>
                 <h:dataTable value="#{libroBean.calificaciones}" var="calificacion" border="2">

@@ -24,13 +24,14 @@ import java.util.*;
 public class LibroBean implements Serializable {
 
     Connection connect = null;
+    private String reseniaMensaje;
 
     public void conectar() throws ClassNotFoundException {
 
         String url = "jdbc:mysql://localhost:3306/libros";
 
         String username = "root";
-        String password = "0711";
+        String password = "12345";
 
         try {
 
@@ -71,6 +72,16 @@ public class LibroBean implements Serializable {
     public void setCalificacion(int calificacion) {
         this.calificacion = calificacion;
     }
+
+    public String getReseniaMensaje() {
+        return reseniaMensaje;
+    }
+
+    public void setReseniaMensaje(String reseniaMensaje) {
+        this.reseniaMensaje = reseniaMensaje;
+    }
+    
+    
 
     private static final long serialVersionUID = 6081417964063918994L;
 
@@ -114,6 +125,14 @@ public class LibroBean implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("PF('myDialogVar').show();");
     }
+    
+      public void resenia(int id) {
+
+        idLibroCalificacion = id;
+
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.execute("PF('myResenia').show();");
+    }
 
     public void guardar() throws SQLException, ClassNotFoundException {
         conectar();
@@ -127,6 +146,23 @@ public class LibroBean implements Serializable {
         
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("PF('myDialogVar').hide();");
+
+    }
+    
+    public void guardarResenia() throws SQLException, ClassNotFoundException {
+        conectar();
+
+        System.out.println("--"+idLibroCalificacion+"--"+reseniaMensaje);
+        
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDateTime now = LocalDateTime.now();
+        System.out.println(dtf.format(now));
+        
+        PreparedStatement pstmt = connect.prepareStatement("insert into resenia(libros_idLibro, mensaje, fecha, lector) value (1,"+reseniaMensaje+", '2020-06-23','Anibal' )");
+        int rs = pstmt.executeUpdate();
+        
+        RequestContext context = RequestContext.getCurrentInstance();                                                   
+        context.execute("PF('myResenia').hide();");
 
     }
     
