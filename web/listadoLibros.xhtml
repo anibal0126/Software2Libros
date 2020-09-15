@@ -41,17 +41,17 @@
                     <f:facet name="header">Observacion</f:facet>
                         #{libro.observaciones}
                 </h:column>
-                
+
                 <h:column>
                     <f:facet name="header">Acciones</f:facet>
                     <p:commandButton value="Calificar Libro"
                                      action="#{libroBean.calificar(libro.idLibro)}" />
                     <p:commandButton value="Ver Calificaciones"
                                      action="#{libroBean.listarCalificaciones(libro.idLibro)}" />
-                     <p:commandButton value="Agregar Resela"
+                    <p:commandButton value="Agregar Resela"
                                      action="#{libroBean.resenia(libro.idLibro)}" />
-                     <p:commandButton value="Ver Calificaciones"
-                                     action="#{libroBean.listarCalificaciones(libro.idLibro)}" />
+                    <p:commandButton value="Ver Calificaciones"
+                                     action="#{libroBean.listarResenias(libro.idLibro)}" />
                 </h:column>
             </h:dataTable>
             <br/>
@@ -59,54 +59,81 @@
         <p:dialog id="myDialogID" widgetVar="myDialogVar">
             <h:form>
                 <h:selectOneMenu value="#{libroBean.calificacion}">
-                <f:selectItem itemValue="1" itemLabel="1" />
-                <f:selectItem itemValue="2" itemLabel="2" />
-                <f:selectItem itemValue="3" itemLabel="3" />
-                <f:selectItem itemValue="4" itemLabel="4" />
-                <f:selectItem itemValue="5" itemLabel="5" />
-            </h:selectOneMenu>
-            <p:commandButton value="guadar"
-                             action="#{libroBean.guardar()}" />
+                    <f:selectItem itemValue="1" itemLabel="1" />
+                    <f:selectItem itemValue="2" itemLabel="2" />
+                    <f:selectItem itemValue="3" itemLabel="3" />
+                    <f:selectItem itemValue="4" itemLabel="4" />
+                    <f:selectItem itemValue="5" itemLabel="5" />
+                </h:selectOneMenu>
+                <p:commandButton value="guadar"
+                                 action="#{libroBean.guardar()}" />
             </h:form> 
-           
+
         </p:dialog>
-        
+
         <p:dialog id="myResenia" widgetVar="myResenia">
             <h:form>
-                <textarea value="#{libroBean.reseniaMensaje}">
+                
+                <h:inputTextarea value="#{libroBean.reseniaMensaje}">
                     
-                </textarea>
-            <p:commandButton value="guadarResenia"
-                             action="#{libroBean.guardarResenia()}" />
+                </h:inputTextarea>
+                <p:commandButton value="guadarResenia"
+                                 action="#{libroBean.guardarResenia()}" />
             </h:form> 
-           
+
         </p:dialog>
-        
+
         <p:dialog id="listadoCalificaciones" widgetVar="listadoCalificaciones">
             <h:form>
                 <h:dataTable value="#{libroBean.calificaciones}" var="calificacion" border="2">
 
-                <h:column>
-                    <f:facet name="header">Fecha</f:facet>
-                        #{calificacion.fecha}
-                </h:column>
-                <h:column>
-                    <f:facet name="header">Calificación</f:facet>
-                        #{calificacion.calificacion}
-                </h:column>
-                <h:column>
-                    <f:facet name="header">Usuario</f:facet>
-                        #{calificacion.usuario}
-                </h:column>
-                <h:column>
-                    <f:facet name="header">Id Libro</f:facet>
-                        #{calificacion.idLibro}
-                </h:column>
-               
-            </h:dataTable>
+                    <h:column>
+                        <f:facet name="header">Fecha</f:facet>
+                            #{calificacion.fecha}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Calificación</f:facet>
+                            #{calificacion.calificacion}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Usuario</f:facet>
+                            #{calificacion.usuario}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Id Libro</f:facet>
+                            #{calificacion.idLibro}
+                    </h:column>
+
+                </h:dataTable>
             </h:form> 
-           
+
         </p:dialog>
         
+        <p:dialog id="listadoResenias" widgetVar="listadoResenias">
+            <h:form>
+                <h:dataTable value="#{libroBean.resenias}" var="resenia" border="2">
+
+                    <h:column>
+                        <f:facet name="header">Id Libro</f:facet>
+                            #{resenia.idLibro}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Mensaje</f:facet>
+                            #{resenia.mensaje}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Fecha</f:facet>
+                            #{resenia.fecha}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Usuario</f:facet>
+                            #{resenia.lector}
+                    </h:column>
+
+                </h:dataTable>
+            </h:form> 
+
+        </p:dialog>
+
     </h:body>
 </html>

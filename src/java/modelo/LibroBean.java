@@ -31,7 +31,7 @@ public class LibroBean implements Serializable {
         String url = "jdbc:mysql://localhost:3306/libros";
 
         String username = "root";
-        String password = "12345";
+        String password = "0711";
 
         try {
 
@@ -151,14 +151,12 @@ public class LibroBean implements Serializable {
     
     public void guardarResenia() throws SQLException, ClassNotFoundException {
         conectar();
-
-        System.out.println("--"+idLibroCalificacion+"--"+reseniaMensaje);
         
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDateTime now = LocalDateTime.now();
         System.out.println(dtf.format(now));
         
-        PreparedStatement pstmt = connect.prepareStatement("insert into resenia(libros_idLibro, mensaje, fecha, lector) value (1,"+reseniaMensaje+", '2020-06-23','Anibal' )");
+        PreparedStatement pstmt = connect.prepareStatement("insert into resenia(libros_idLibro, mensaje, fecha, lector) value (1,'"+reseniaMensaje+"', '"+dtf.format(now)+"','Anibal' )");
         int rs = pstmt.executeUpdate();
         
         RequestContext context = RequestContext.getCurrentInstance();                                                   
@@ -197,6 +195,36 @@ public class LibroBean implements Serializable {
 
         return calificaciones;
         
+    }public List<Resenia> getResenias() throws ClassNotFoundException, SQLException{
+        
+        conectar();
+        
+        System.out.println("Esta variable: "+ idLibroCalificacion);
+        
+
+        List<Resenia> resenias = new ArrayList<>();
+        PreparedStatement pstmt = connect.prepareStatement("select libros_idLibro, mensaje, fecha, lector from resenia where libros_idLibro="+idLibroCalificacion);
+        ResultSet rs = pstmt.executeQuery();
+
+        while (rs.next()) {
+
+            Resenia resenia = new Resenia();
+            resenia.setIdLibro(rs.getInt("libros_idLibro"));
+            resenia.setMensaje(rs.getString("mensaje"));
+            resenia.setFecha(rs.getString("fecha"));
+            resenia.setLector(rs.getString("lector"));
+
+            resenias.add(resenia);
+
+        }
+
+        // close resources
+        rs.close();
+        pstmt.close();
+        connect.close();
+
+        return resenias;
+        
     }
     
     public void listarCalificaciones(int id){
@@ -209,6 +237,17 @@ public class LibroBean implements Serializable {
         
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("PF('listadoCalificaciones').show();");
+    }
+    public void listarResenias(int id){
+        
+        idLibroCalificacion = id;
+        
+        System.out.println("OKEY: "+idLibroCalificacion);
+        
+        RequestContext.getCurrentInstance().update("listadoResenias");
+        
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.execute("PF('listadoResenias').show();");
     }
 
 }
