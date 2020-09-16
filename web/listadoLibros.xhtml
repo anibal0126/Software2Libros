@@ -15,8 +15,26 @@
     <h:body >
         <div align="center" class="div">
             <h:form>
-            <h2 >Listado de Libros</h2>
-            <h:dataTable  value="#{libroBean.libros}" var="libro" border="2">
+            <h2 style="background-color: rgb(0 0 0 / 70%); padding: 8px; color: white; width: 85%;">Listado de Libros</h2>
+            
+            <div style="text-align: left; width: 85%;">
+                <hr />
+                <h3 style="text-decoration: underline;">Filtros de búsqueda</h3>
+ 
+ 
+                <h:panelGroup>
+                    <h:outputLabel style="margin-right: 104px;">Nombre:</h:outputLabel><h:inputText value="#{libroBean.filtroNombre}"></h:inputText> <br /><br />
+                    <h:outputLabel style="margin-right: 120px;">Autor:</h:outputLabel><h:inputText value="#{libroBean.filtroAutor}"></h:inputText> <br /><br />
+                    <h:outputLabel style="margin-right: 83px;">ID del libro:</h:outputLabel><h:inputText value="#{libroBean.filtroIdLibro}" onkeypress="if(event.which &lt; 48 || event.which &gt; 57) return false;"></h:inputText> <br /><br /><br />
+                </h:panelGroup>
+                
+                <p:commandButton value="Buscar" update="@form" style="margin-right: 10px;" icon="ui-icon-search"/>
+                <p:commandButton value="Limpiar filtros" action="#{libroBean.limpiarFiltros()}" update="@form" icon="ui-icon-arrowrefresh-1-w"/>
+                <br />
+                <hr />
+            </div>
+            
+            <h:dataTable  value="#{libroBean.libros}" var="libro" border="2" id="listadoLibros" rendered="#{libroBean.libros.size() != 0}" style="background-color: azure; width: 85%;" columnClasses="column1,column2,column3,column4,column5,column6">
                 <h:column>
                     <f:facet name="header">Id Libro</f:facet>
                         #{libro.idLibro}
@@ -41,22 +59,23 @@
                 <h:column>
                     <f:facet name="header">Acciones</f:facet>
                     <p:commandButton value="Calificar Libro"
-                                     action="#{libroBean.calificar(libro.idLibro)}"  />
+                                     action="#{libroBean.calificar(libro.idLibro)}" style="font-size: 14px;"/>
                     <p:commandButton value="Ver Calificaciones"
-                                     action="#{libroBean.listarCalificaciones(libro.idLibro)}" />
+                                     action="#{libroBean.listarCalificaciones(libro.idLibro)}" style="font-size: 14px;" />
                     <p:commandButton value="Agregar Reseña"
-                                     action="#{libroBean.resenia(libro.idLibro)}" />
+                                     action="#{libroBean.resenia(libro.idLibro)}" style="font-size: 14px;" />
                     <p:commandButton value="Ver Reseñas"
-                                     action="#{libroBean.listarResenias(libro.idLibro)}" />
+                                     action="#{libroBean.listarResenias(libro.idLibro)}" style="font-size: 14px;" />
                 </h:column>
             </h:dataTable>
+            <h:outputText style="font-weight: bold; font-size: 20px;" value="No se encontraron registros" rendered="#{libroBean.libros.size() == 0}"/>
             <br/>
         </h:form>
         </div>
         
         <p:dialog header="Calificacion del libro" id="myDialogID" widgetVar="myDialogVar">
             <h:form>
-                <h:outputLabel>Califique el libro</h:outputLabel>
+                <h:outputLabel>Califique el libro: </h:outputLabel>
                 <h:selectOneMenu value="#{libroBean.calificacion}">
                     <f:selectItem itemValue="1" itemLabel="1" />
                     <f:selectItem itemValue="2" itemLabel="2" />
@@ -64,7 +83,8 @@
                     <f:selectItem itemValue="4" itemLabel="4" />
                     <f:selectItem itemValue="5" itemLabel="5" />
                 </h:selectOneMenu>
-                <p:commandButton value="guadar"
+                <br /><br />
+                <p:commandButton value="Guadar"
                                  action="#{libroBean.guardar()}" />
             </h:form> 
 
@@ -75,7 +95,8 @@
                 
                 <h:inputTextarea cols="30" rows="10" value="#{libroBean.reseniaMensaje}">
                 </h:inputTextarea>
-                <p:commandButton  value="guadarResenia"
+                <br /><br />
+                <p:commandButton  value="Guardar"
                                  action="#{libroBean.guardarResenia()}" />
             </h:form> 
 

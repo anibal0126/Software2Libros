@@ -10,3 +10,13 @@ and open the template in the editor.
 .contenedor{ background-image: url("imagen.jpg"); }
 
 .div { align-content: center }
+
+.labelText {width: 200px !important;white-space: normal}
+
+.column6 {
+  padding: 6px !important;
+}
+
+.column6 button {
+  margin-right: 12px !important;
+}

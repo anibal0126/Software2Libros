@@ -1,9 +1,7 @@
 package modelo;
 
-import java.awt.BorderLayout;
 import java.io.Serializable;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,12 +10,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
 import org.primefaces.context.RequestContext;
-import java.util.*;
 
 @ManagedBean
 @SessionScoped
@@ -25,13 +20,16 @@ public class LibroBean implements Serializable {
 
     Connection connect = null;
     private String reseniaMensaje;
+    private String filtroNombre;
+    private String filtroAutor;
+    private String filtroIdLibro;
 
     public void conectar() throws ClassNotFoundException {
 
         String url = "jdbc:mysql://localhost:3306/libros";
 
         String username = "root";
-        String password = "0711";
+        String password = "cne7";
 
         try {
 
@@ -81,16 +79,66 @@ public class LibroBean implements Serializable {
         this.reseniaMensaje = reseniaMensaje;
     }
     
-    
+    public String getFiltroNombre() {
+        return filtroNombre;
+    }
+
+    public void setFiltroNombre(String filtroNombre) {
+        this.filtroNombre = filtroNombre;
+    }
+
+    public String getFiltroAutor() {
+        return filtroAutor;
+    }
+
+    public void setFiltroAutor(String filtroAutor) {
+        this.filtroAutor = filtroAutor;
+    }
+
+    public String getFiltroIdLibro() {
+        return filtroIdLibro;
+    }
+
+    public void setFiltroIdLibro(String filtroIdLibro) {
+        this.filtroIdLibro = filtroIdLibro;
+    }
 
     private static final long serialVersionUID = 6081417964063918994L;
 
     public List<Libro> getLibros() throws ClassNotFoundException, SQLException {
 
         conectar();
+        System.out.println("Entro a listar los libros");
 
         List<Libro> libros = new ArrayList<>();
-        PreparedStatement pstmt = connect.prepareStatement("select idLibro, nombre, autor, estado, observaciones from libros");
+        String consulta = "select idLibro, nombre, autor, estado, observaciones from libros";
+        System.out.println("Filtro: "+filtroNombre);
+        
+        if(filtroNombre != null) {
+            
+            if(!filtroNombre.equalsIgnoreCase("")) {
+                System.out.println("Entro filtroNombre: "+filtroNombre);
+                consulta = "select idLibro, nombre, autor, estado, observaciones from libros WHERE nombre = '"+filtroNombre+"'";
+            }
+        }
+        
+        if(filtroAutor != null) {
+            
+            if(!filtroAutor.equalsIgnoreCase("")) {
+                System.out.println("Entro filtroAutor: "+filtroAutor);
+                consulta = "select idLibro, nombre, autor, estado, observaciones from libros WHERE autor = '"+filtroAutor+"'";
+            }
+        }
+        
+        if(filtroIdLibro != null) {
+            
+            if(!filtroIdLibro.equalsIgnoreCase("")) {
+                System.out.println("Entro filtroIdLibro: "+filtroIdLibro);
+                consulta = "select idLibro, nombre, autor, estado, observaciones from libros WHERE idLibro = "+filtroIdLibro;
+            }
+        }
+        
+        PreparedStatement pstmt = connect.prepareStatement(consulta);
         ResultSet rs = pstmt.executeQuery();
 
         while (rs.next()) {
@@ -109,9 +157,10 @@ public class LibroBean implements Serializable {
         // close resources
         rs.close();
         pstmt.close();
-        connect.close();
 
         return libros;
+        
+        
 
     }
     public int calificacion1;
@@ -195,7 +244,9 @@ public class LibroBean implements Serializable {
 
         return calificaciones;
         
-    }public List<Resenia> getResenias() throws ClassNotFoundException, SQLException{
+    }
+    
+    public List<Resenia> getResenias() throws ClassNotFoundException, SQLException{
         
         conectar();
         
@@ -249,5 +300,11 @@ public class LibroBean implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("PF('listadoResenias').show();");
     }
-
+    
+    public void limpiarFiltros() {
+        
+        filtroNombre = "";
+        filtroAutor = "";
+        filtroIdLibro = "";
+    }
 }
