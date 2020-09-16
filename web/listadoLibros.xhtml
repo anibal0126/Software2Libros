@@ -2,25 +2,21 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<html xmlns="http://www.w3.org/1999/xhtml"
+<html class="contenedor" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
-
-    <span class="fa fa-star checked"></span>
-    <span class="fa fa-star checked"></span>
-    <span class="fa fa-star checked"></span>
-    <span class="fa fa-star"></span>
-    <span class="fa fa-star"></span>
     <h:head>
+        <link type="text/css" href="newcss.css" rel="stylesheet"/>
         <title>Proyecto Software2 Libros</title>
 
-    </h:head>
-    <h:body>
-        <h:form>
-            <h2>Listado de Libros</h2>
-            <h:dataTable value="#{libroBean.libros}" var="libro" border="2">
+    </h:head >
+    <h:body >
+        <div align="center" class="div">
+            <h:form>
+            <h2 >Listado de Libros</h2>
+            <h:dataTable  value="#{libroBean.libros}" var="libro" border="2">
                 <h:column>
                     <f:facet name="header">Id Libro</f:facet>
                         #{libro.idLibro}
@@ -45,18 +41,20 @@
                 <h:column>
                     <f:facet name="header">Acciones</f:facet>
                     <p:commandButton value="Calificar Libro"
-                                     action="#{libroBean.calificar(libro.idLibro)}" />
+                                     action="#{libroBean.calificar(libro.idLibro)}"  />
                     <p:commandButton value="Ver Calificaciones"
                                      action="#{libroBean.listarCalificaciones(libro.idLibro)}" />
-                    <p:commandButton value="Agregar Resela"
+                    <p:commandButton value="Agregar Reseña"
                                      action="#{libroBean.resenia(libro.idLibro)}" />
-                    <p:commandButton value="Ver Calificaciones"
+                    <p:commandButton value="Ver Reseñas"
                                      action="#{libroBean.listarResenias(libro.idLibro)}" />
                 </h:column>
             </h:dataTable>
             <br/>
         </h:form>
-        <p:dialog id="myDialogID" widgetVar="myDialogVar">
+        </div>
+        
+        <p:dialog header="Calificacion del libro" id="myDialogID" widgetVar="myDialogVar">
             <h:form>
                 <h:outputLabel>Califique el libro</h:outputLabel>
                 <h:selectOneMenu value="#{libroBean.calificacion}">
@@ -72,19 +70,18 @@
 
         </p:dialog>
 
-        <p:dialog id="myResenia" widgetVar="myResenia">
+        <p:dialog  header="Agregar Reseña" id="myResenia" widgetVar="myResenia">
             <h:form>
                 
-                <h:inputTextarea value="#{libroBean.reseniaMensaje}">
-                    
+                <h:inputTextarea cols="30" rows="10" value="#{libroBean.reseniaMensaje}">
                 </h:inputTextarea>
-                <p:commandButton value="guadarResenia"
+                <p:commandButton  value="guadarResenia"
                                  action="#{libroBean.guardarResenia()}" />
             </h:form> 
 
         </p:dialog>
 
-        <p:dialog id="listadoCalificaciones" widgetVar="listadoCalificaciones">
+        <p:dialog header="Tabla de Calificaciones" id="listadoCalificaciones" widgetVar="listadoCalificaciones">
             <h:form>
                 <h:dataTable value="#{libroBean.calificaciones}" var="calificacion" border="2">
 
@@ -110,7 +107,7 @@
 
         </p:dialog>
         
-        <p:dialog id="listadoResenias" widgetVar="listadoResenias">
+        <p:dialog header="Tabla de reseñas" id="listadoResenias" widgetVar="listadoResenias">
             <h:form>
                 <h:dataTable value="#{libroBean.resenias}" var="resenia" border="2">
 
@@ -137,4 +134,6 @@
         </p:dialog>
 
     </h:body>
+    
 </html>
+
